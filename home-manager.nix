@@ -172,6 +172,7 @@ in
             bindfsOptions = concatStringsSep "," (
               optional (!cfg.${persistentStoragePath}.allowOther) "no-allow-other"
               ++ optional (versionAtLeast pkgs.bindfs.version "1.14.9") "fsname=${targetDir}"
+              ++ optional (versionAtLeast pkgs.bindfs.version "1.16.0") "no-direct-io"
             );
             bindfsOptionFlag = optionalString (bindfsOptions != "") (" -o " + bindfsOptions);
             bindfs = "bindfs" + bindfsOptionFlag;
@@ -274,6 +275,7 @@ in
             bindfsOptions = concatStringsSep "," (
               optional (!cfg.${persistentStoragePath}.allowOther) "no-allow-other"
               ++ optional (versionAtLeast pkgs.bindfs.version "1.14.9") "fsname=${targetDir}"
+              ++ optional (versionAtLeast pkgs.bindfs.version "1.16.0") "no-direct-io"
             );
             bindfsOptionFlag = optionalString (bindfsOptions != "") (" -o " + bindfsOptions);
             bindfs = "${pkgs.bindfs}/bin/bindfs" + bindfsOptionFlag;
