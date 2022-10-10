@@ -5,7 +5,7 @@ let
     types foldl' unique noDepEntry concatMapStrings listToAttrs
     escapeShellArg escapeShellArgs replaceStrings recursiveUpdate all
     filter filterAttrs concatStringsSep concatMapStringsSep isString
-    catAttrs optional literalExpression;
+    catAttrs optional literalExpression mkEnableOption mkIf;
 
   inherit (pkgs.callPackage ./lib.nix { }) splitPath dirListToPath
     concatPaths sanitizeName duplicates;
@@ -129,6 +129,7 @@ in
             {
               options =
                 {
+                  enable = mkEnableOption "persistence";
                   users = mkOption {
                     type = attrsOf (
                       submodule (
@@ -368,7 +369,7 @@ in
     virtualisation.fileSystems = mkOption { };
   };
 
-  config = {
+  config = mkIf cfg.enable {
     systemd.services =
       let
         mkPersistFileService = { file, persistentStoragePath, ... }:

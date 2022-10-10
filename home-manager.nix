@@ -42,6 +42,7 @@ in
         submodule ({ name, ... }: {
           options =
             {
+              enable = mkEnableOption "persistence";
               directories = mkOption {
                 type = with types; listOf (either str (submodule {
                   options = {
@@ -183,7 +184,7 @@ in
 
   };
 
-  config = {
+  config = mkIf cfg.enable {
     home.file =
       let
         link = file:
